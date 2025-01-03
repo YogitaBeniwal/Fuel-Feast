@@ -106,10 +106,6 @@ We welcome contributions! Here’s how you can help:
 - Yogita Beniwal
 - Gargi Mittal
 
-## License
-
-This project does not currently have a license. 
-
 ## Contact
 
 For questions or suggestions, please feel free to open an issue on this repository.
