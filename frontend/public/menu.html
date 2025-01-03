@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fuel Feast Menu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:wght@400;700&display=swap"
+        rel="stylesheet">
+        
+<style>
+    body { font-family: 'Roboto', sans-serif; margin: 0; padding: 0; background-color: #1a1a1a; color: #ffffff; }
+        .menu-bg { width: 100vw; height: 100vh; position: fixed; background: url("menu.avif") no-repeat center center fixed; background-size: cover; left: 0; top: 0; z-index: -1; opacity: 0.7; }
+        header { background-color: rgba(10, 12, 15, 0.8); color: #ffffff; padding: 20px; text-align: center; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5); }
+        header h1 { margin: 0; font-family: 'Bebas Neue', cursive; font-size: 3em; letter-spacing: 2px; color: #f39c12; }
+        header p { margin: 10px 0 0; font-size: 1.2em; }
+        main { padding: 20px; max-width: 800px; margin: 50px auto; background: rgba(10, 12, 15, 0.8); border-radius: 10px; box-shadow: 0 0 15px rgba(0, 0, 0, 0.5); }
+        .menu { background-color: rgba(42, 49, 61, 0.8); padding: 20px; border-radius: 10px; }
+        .menu h2 { border-bottom: 2px solid #f39c12; padding-bottom: 10px; margin-bottom: 20px; color: #f39c12; font-family: 'Bebas Neue', cursive; font-size: 2.5em; text-align: center; }
+        .menu-section { margin-bottom: 40px; }
+        .menu-section h3 { background-color: rgba(10, 12, 15, 0.8); color: #f39c12; padding: 10px; border-radius: 5px; margin: 0 -20px 20px; font-family: 'Bebas Neue', cursive; font-size: 2em; text-align: center; }
+        .menu-item { display: flex; justify-content: space-between; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #404040; transition: all 0.3s ease-in-out; align-items: center; }
+        .menu-item:hover { background-color: rgba(243, 156, 18, 0.1); transform: scale(1.02); }
+        .menu-item h4 { margin: 0; font-size: 1.2em; }
+        .menu-item .price { color: #f39c12; font-weight: bold; font-size: 1.2em; }
+        .cart-button { position: absolute; top: 20px; right: 20px; background-color: #f39c12; color: #ffffff; padding: 10px 15px; border-radius: 5px; font-size: 1em; cursor: pointer; font-weight: bold; text-decoration: none; }
+        .cart-modal { display: none; position: fixed; top: 20%; right: 5%; width: 300px; background-color: #2c2c2c; color: #ffffff; border-radius: 10px; padding: 20px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); z-index: 100; }
+        .cart-modal h3 { color: #f39c12; margin-top: 0; font-size: 1.5em; text-align: center; }
+        .cart-item { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #404040; }
+        .cart-item p { margin: 5px 0; }
+        .close-cart { display: block; margin: 10px auto 0; padding: 5px 10px; background-color: #f39c12; color: #ffffff; border: none; border-radius: 5px; cursor: pointer; }
+</style>
+</head>
+<body>
+    <header>
+        <h1>Fuel Feast</h1>
+        <p>Your go-to place for healthy and diet-friendly vegetarian food!</p>
+        <button class="cart-button" onclick="toggleCartModal()">🛒 Cart (<span id="cart-count">0</span>)</button>
+    </header>
+    <main>
+        <div class="menu-bg"></div>
+        <section class="menu">
+            <h2>Our Top Food Items</h2>
+
+            <!-- Breakfast Section -->
+            <div class="menu-section">
+                <h3>Breakfast</h3>
+                <div class="menu-item">
+                    <h4>Pan Seared Sea Bass</h4>
+                    <p class="price">₹450</p>
+                    <div class="quantity-controls">
+                        <button onclick="changeQuantity('Pan Seared Sea Bass', 450, -1)">-</button>
+                        <span id="quantity-Pan-Seared-Sea-Bass" class="quantity-display">0</span>
+                        <button onclick="changeQuantity('Pan Seared Sea Bass', 450, 1)">+</button>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <h4>Avocado Toast with Eggs</h4>
+                    <p class="price">₹250</p>
+                    <div class="quantity-controls">
+                        <button onclick="changeQuantity('avocado-toast-with-eggs', 250, -1)">-</button>
+                        <span id="quantity-avocado-toast-with-eggs" class="quantity-display">0</span>
+                        <button onclick="changeQuantity('avocado-toast-with-eggs', 250, 1)">+</button>
+                    </div>                    
+                </div>
+                <div class="menu-item">
+                    <h4>Berry Detox Smoothie</h4>
+                    <p class="price">₹180</p>
+                    <div class="quantity-controls">
+                        <button onclick="changeQuantity('berry-detox-smoothie', 180, -1)">-</button>
+                        <span id="quantity-berry-detox-smoothie" class="quantity-display">0</span>
+                        <button onclick="changeQuantity('berry-detox-smoothie', 180, 1)">+</button>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <h4>Oatmeal with Fresh Berries</h4>
+                    <p class="price">₹150</p>
+                    <div class="quantity-controls">
+                        <button onclick="changeQuantity('Oatmeal with Fresh Berries', 150, -1)">-</button>
+                        <span id="quantity-Oatmeal-with-Fresh-Berries" class="quantity-display">0</span>
+                        <button onclick="changeQuantity('Oatmeal with Fresh Berries', 150, 1)">+</button>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <h4>Vegetable Frittata</h4>
+                    <p class="price">₹200</p>
+                    <div class="quantity-controls">
+                        <button onclick="changeQuantity('Vegetable Frittata', 200, -1)">-</button>
+                        <span id="quantity-Vegetable-Frittata" class="quantity-display">0</span>
+                        <button onclick="changeQuantity('Vegetable Frittata', 200, 1)">+</button>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <h4>Spinach and Egg White Omelette</h4>
+                    <p class="price">₹220</p>
+                    <div class="quantity-controls">
+                        <button onclick="changeQuantity('Spinach and Egg White Omelette', 220, -1)">-</button>
+                        <span id="quantity-Spinach-and-Egg-White-Omelette" class="quantity-display">0</span>
+                        <button onclick="changeQuantity('Spinach and Egg White Omelette', 220, 1)">+</button>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <h4>Greek Yogurt with Honey and Nuts</h4>
+                    <p class="price">₹180</p>
+                    <div class="quantity-controls">
+                        <button onclick="changeQuantity('greek-yogurt-honey-nuts', 180, -1)">-</button>
+                        <span id="quantity-greek-yogurt-honey-nuts" class="quantity-display">0</span>
+                        <button onclick="changeQuantity('greek-yogurt-honey-nuts', 180, 1)">+</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lunch Section -->
+            <div class="menu-section">
+                <h3>Lunch</h3>
+                <div class="menu-item">
+                    <h4>Protein-Packed Smoothie Bowl</h4>
+                    <p class="price">₹150</p>
+                    <div class="quantity-controls">
+                        <button onclick="changeQuantity('Protein-Packed Smoothie Bowl', 150, -1)">-</button>
+                        <span id="quantity-Protein-Packed-Smoothie-Bowl" class="quantity-display">0</span>
+                        <button onclick="changeQuantity('Protein-Packed Smoothie Bowl', 150, 1)">+</button>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <h4>Grilled Vegetable Wrap</h4>
+                    <p class="price">₹200</p>
+                    <div class="quantity-controls">
+                        <button onclick="changeQuantity('Grilled Vegetable Wrap', 200, -1)">-</button>
+                        <span id="quantity-Grilled-Vegetable-Wrap" class="quantity-display">0</span>
+                        <button onclick="changeQuantity('Grilled Vegetable Wrap', 200, 1)">+</button>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <h4>Stuffed Bell Peppers</h4>
+                    <p class="price">₹250</p>
+                    <div class="quantity-controls">
+                        <button onclick="changeQuantity('Stuffed Bell Peppers', 250, -1)">-</button>
+                        <span id="quantity-Stuffed-Bell-Peppers" class="quantity-display">0</span>
+                        <button onclick="changeQuantity('Stuffed Bell Peppers', 250, 1)">+</button>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <h4>Quinoa Salad with Avocado</h4>
+                    <p class="price">₹220</p>
+                    <div class="quantity-controls">
+                        <button onclick="changeQuantity('Quinoa Salad with Avocado', 220, -1)">-</button>
+                        <span id="quantity-Quinoa-Salad-with-Avocado" class="quantity-display">0</span>
+                        <button onclick="changeQuantity('Quinoa Salad with Avocado', 220, 1)">+</button>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <h4>Vegetable Tofu Stir Fry</h4>
+                    <p class="price">₹300</p>
+                    <div class="quantity-controls">
+                        <button onclick="changeQuantity('Vegetable Tofu Stir Fry', 300, -1)">-</button>
+                        <span id="quantity-Vegetable-Tofu-Stir-Fry" class="quantity-display">0</span>
+                        <button onclick="changeQuantity('Vegetable Tofu Stir Fry', 300, 1)">+</button>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <h4>Chickpea and Spinach Salad</h4>
+                    <p class="price">₹200</p>
+                    <div class="quantity-controls">
+                        <button onclick="changeQuantity('Chickpea and Spinach Salad', 200, -1)">-</button>
+                        <span id="quantity-Chickpea-and-Spinach-Salad" class="quantity-display">0</span>
+                        <button onclick="changeQuantity('Chickpea and Spinach Salad', 200, 1)">+</button>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <h4>Roasted Veggie Buddha Bowl</h4>
+                    <p class="price">₹300</p>
+                    <div class="quantity-controls">
+                        <button onclick="changeQuantity('Roasted Veggie Buddha Bowl', 300, -1)">-</button>
+                        <span id="quantity-Roasted-Veggie-Buddha-Bowl" class="quantity-display">0</span>
+                        <button onclick="changeQuantity('Roasted Veggie Buddha Bowl', 300, 1)">+</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dinner Section -->
+            <div class="menu-section">
+                <h3>Dinner</h3>
+                <div class="menu-item">
+                    <h4>Avocado Toast with Eggs</h4>
+                    <p class="price">₹250</p>
+                    <div class="quantity-controls">
+                        <button onclick="changeQuantity('Avocado Toast with Eggs', 250, -1)">-</button>
+                        <span id="quantity-Avocado-Toast-with-Eggs" class="quantity-display">0</span>
+                        <button onclick="changeQuantity('Avocado Toast with Eggs', 250, 1)">+</button>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <h4>Vegetable Tofu Fry</h4>
+                    <p class="price">₹300</p>
+                    <div class="quantity-controls">
+                        <button onclick="changeQuantity('Vegetable Tofu Fry', 300, -1)">-</button>
+                        <span id="quantity-Vegetable-Tofu-Fry" class="quantity-display">0</span>
+                        <button onclick="changeQuantity('Vegetable Tofu Fry', 300, 1)">+</button>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <h4>Lentil and Spinach Curry</h4>
+                    <p class="price">₹200</p>
+                    <div class="quantity-controls">
+                        <button onclick="changeQuantity('Lentil and Spinach Curry', 200, -1)">-</button>
+                        <span id="quantity-Lentil-and-Spinach-Curry" class="quantity-display">0</span>
+                        <button onclick="changeQuantity('Lentil and Spinach Curry', 200, 1)">+</button>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <h4>Mussels Soup</h4>
+                    <p class="price">₹350</p>
+                    <div class="quantity-controls">
+                        <button onclick="changeQuantity('Mussels Soup', 350, -1)">-</button>
+                        <span id="quantity-Mussels-Soup" class="quantity-display">0</span>
+                        <button onclick="changeQuantity('Mussels Soup', 350, 1)">+</button>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <h4>Veggie-Packed Buddha Bowl</h4>
+                    <p class="price">₹300</p>
+                    <div class="quantity-controls">
+                        <button onclick="changeQuantity('Veggie-Packed Buddha Bowl', 300, -1)">-</button>
+                        <span id="quantity-Veggie-Packed-Buddha-Bowl" class="quantity-display">0</span>
+                        <button onclick="changeQuantity('Veggie-Packed Buddha Bowl', 300, 1)">+</button>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <h4>Chickpea and Spinach Stew</h4>
+                    <p class="price">₹220</p>
+                    <div class="quantity-controls">
+                        <button onclick="changeQuantity('Chickpea and Spinach Stew', 220, -1)">-</button>
+                        <span id="quantity-Chickpea-and-Spinach-Stew" class="quantity-display">0</span>
+                        <button onclick="changeQuantity('Chickpea and Spinach Stew', 220, 1)">+</button>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <h4>Grilled Vegetable Skewers</h4>
+                    <p class="price">₹270</p>
+                    <div class="quantity-controls">
+                        <button onclick="changeQuantity('Grilled Vegetable Skewers', 270, -1)">-</button>
+                        <span id="quantity-Grilled-Vegetable-Skewers" class="quantity-display">0</span>
+                        <button onclick="changeQuantity('Grilled Vegetable Skewers', 270, 1)">+</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Protein and Healthy Shakes Section -->
+            <div class="menu-section">
+                <h3>Protein and Healthy Shakes</h3>
+                <div class="menu-item">
+                    <h4>Berry Detox Smoothie</h4>
+                    <p class="price">₹180</p>
+                    <div class="quantity-controls">
+                        <button onclick="changeQuantity('Berry-Detox-Smoothie', 180, -1)">-</button>
+                        <span id="quantity-Berry-Detox-Smoothie" class="quantity-display">0</span>
+                        <button onclick="changeQuantity('Berry-Detox-Smoothie', 180, 1)">+</button>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <h4>Protein-Packed Smoothie Bowl</h4>
+                    <p class="price">₹150</p>
+                    <div class="quantity-controls">
+                        <button onclick="changeQuantity('protein-packed-smoothie-bowl', 150, -1)">-</button>
+                        <span id="quantity-protein-packed-smoothie-bowl" class="quantity-display">0</span>
+                        <button onclick="changeQuantity('protein-packed-smoothie-bowl', 150, 1)">+</button>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <h4>Green Protein Shake</h4>
+                    <p class="price">₹200</p>
+                    <div class="quantity-controls">
+                        <button onclick="changeQuantity('Green Protein Shake', 200, -1)">-</button>
+                        <span id="quantity-Green-Protein-Shake" class="quantity-display">0</span>
+                        <button onclick="changeQuantity('Green Protein Shake', 200, 1)">+</button>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <h4>Banana Almond Smoothie</h4>
+                    <p class="price">₹180</p>
+                    <div class="quantity-controls">
+                        <button onclick="changeQuantity('Banana Almond Smoothie', 180, -1)">-</button>
+                        <span id="quantity-Banana-Almond-Smoothie" class="quantity-display">0</span>
+                        <button onclick="changeQuantity('Banana Almond Smoothie', 180, 1)">+</button>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <h4>Mango Chia Seed Smoothie</h4>
+                    <p class="price">₹220</p>
+                    <div class="quantity-controls">
+                        <button onclick="changeQuantity('Mango Chia Seed Smoothie', 220, -1)">-</button>
+                        <span id="quantity-Mango-Chia-Seed-Smoothie" class="quantity-display">0</span>
+                        <button onclick="changeQuantity('Mango Chia Seed Smoothie', 220, 1)">+</button>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <h4>Peanut Butter Protein Shake</h4>
+                    <p class="price">₹200</p>
+                    <div class="quantity-controls">
+                        <button onclick="changeQuantity('Peanut Butter Protein Shake', 200, -1)">-</button>
+                        <span id="quantity-Peanut-Butter-Protein-Shake" class="quantity-display">0</span>
+                        <button onclick="changeQuantity('Peanut Butter Protein Shake', 200, 1)">+</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="cart-modal" class="cart-modal">
+        <h3>Your Cart</h3>
+        <div id="cart-items"></div>
+        <p id="total-bill">Total: ₹0</p>
+        <button class="close-cart" onclick="handleCheckout()">Pay</button>
+    </div>
+    
+    <!-- Add your JavaScript below -->
+    <!-- <script>
+        let cart = {};
+
+        function sanitizeId(name) {
+            return name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+        }
+
+        function changeQuantity(itemName, itemPrice, change) {
+    // Initialize item in cart if it doesn't exist
+    if (!cart[itemName]) {
+        cart[itemName] = { name: itemName, price: itemPrice, quantity: 0 };
+    }
+
+    // Update quantity and ensure it doesn’t go below 0
+    cart[itemName].quantity += change;
+    if (cart[itemName].quantity < 0) {
+        cart[itemName].quantity = 0;
+    }
+
+    // Update displayed quantity for the specific item
+    document.getElementById(`quantity-${itemName.replace(/\s+/g, '-')}`).textContent = cart[itemName].quantity;
+
+    // Update cart count and modal display
+    updateCartCount();
+    updateCartModal();
+}
+
+        function updateCartCount() {
+            const totalCount = Object.values(cart).reduce((acc, item) => acc + item.quantity, 0);
+            document.getElementById('cart-count').textContent = totalCount;
+        }
+
+        function updateCartModal() {
+    const cartItemsContainer = document.getElementById('cart-items');
+    cartItemsContainer.innerHTML = ''; // Clear previous items
+    let totalBill = 0;
+
+    for (const itemName in cart) {
+        if (cart[itemName].quantity > 0) {
+            const cartItem = document.createElement('div');
+            cartItem.className = 'cart-item';
+            cartItem.innerHTML = `<p>${cart[itemName].name} - Quantity: ${cart[itemName].quantity}</p><p>₹${cart[itemName].price * cart[itemName].quantity}</p>`;
+            cartItemsContainer.appendChild(cartItem);
+
+            // Add to total bill
+            totalBill += cart[itemName].price * cart[itemName].quantity;
+        }
+    }
+
+    // Display the total bill
+    document.getElementById('total-bill').textContent = `Total: ₹${totalBill}`;
+}
+
+
+        function toggleCartModal() {
+            const cartModal = document.getElementById('cart-modal');
+            cartModal.style.display = cartModal.style.display === 'none' || cartModal.style.display === '' ? 'block' : 'none';
+        }
+    </script> -->
+    <script src="https://js.stripe.com/v3/"></script>
+<script>
+    const stripe = Stripe('pk_test_51QIXBuIkVKAr96uPmkvBcgLA4i7SOVOxZyDKkRAnIknSwVpj02Xnot5e3vVkUZbtbI0QWDnTEcts8C3Xh6V0WD6100d9y0mZYs');
+    let cart = {};
+
+    function sanitizeId(name) {
+        return name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    }
+
+    function changeQuantity(itemName, itemPrice, change) {
+        if (!cart[itemName]) {
+            cart[itemName] = { name: itemName, price: itemPrice, quantity: 0 };
+        }
+        cart[itemName].quantity += change;
+        if (cart[itemName].quantity < 0) {
+            cart[itemName].quantity = 0;
+        }
+        document.getElementById(`quantity-${sanitizeId(itemName)}`).textContent = cart[itemName].quantity;
+        updateCartCount();
+        updateCartModal();
+    }
+
+    function updateCartCount() {
+        const totalCount = Object.values(cart).reduce((acc, item) => acc + item.quantity, 0);
+        document.getElementById('cart-count').textContent = totalCount;
+    }
+
+    function updateCartModal() {
+        const cartItemsContainer = document.getElementById('cart-items');
+        cartItemsContainer.innerHTML = '';
+        let totalBill = 0;
+
+        for (const itemName in cart) {
+            if (cart[itemName].quantity > 0) {
+                const cartItem = document.createElement('div');
+                cartItem.className = 'cart-item';
+                cartItem.innerHTML = `<p>${cart[itemName].name} - Quantity: ${cart[itemName].quantity}</p><p>₹${cart[itemName].price * cart[itemName].quantity}</p>`;
+                cartItemsContainer.appendChild(cartItem);
+                totalBill += cart[itemName].price * cart[itemName].quantity;
+            }
+        }
+        document.getElementById('total-bill').textContent = `Total: ₹${totalBill}`;
+    }
+
+    function toggleCartModal() {
+        const cartModal = document.getElementById('cart-modal');
+        cartModal.style.display = cartModal.style.display === 'none' || cartModal.style.display === '' ? 'block' : 'none';
+    }
+
+    // Function to handle the checkout process with Stripe
+    async function handleCheckout() {
+        const items = Object.values(cart).filter(item => item.quantity > 0);
+        
+        if (items.length === 0) {
+            alert("Your cart is empty!");
+            return;
+        }
+
+        try {
+            const response = await fetch('http://localhost:4000/create-checkout-session', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ items: items })
+            });
+
+            const session = await response.json();
+            const result = await stripe.redirectToCheckout({ sessionId: session.id });
+            if (result.error) {
+                alert(result.error.message);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An error occurred while processing the payment.');
+        }
+    }
+</script>
+
+</body>
+</html>
